@@ -1,0 +1,49 @@
+### 이분그래프 판별
+# 인접한 정점끼리 서로 다른 색으로 칠해서 모든 정점을 두 가지 색으로만 칠할 수 있는 그래프.
+# BFS, DFS로 탐색하면서 정점을 방문할 때마다 두 가지 색 중 하나를 칠한다.
+# 다음 정점을 방문하면서 자신과 인접한 정점은 자신과 다른 색으로 칠한다.
+# 탐색을 진행할 때 자신과인접한 정점의 색이 자신과 동일하면 이분 그래프가 아니다.
+# BFS의 경우 정점을 방문하다가 만약 같은 레벨에서 정점을 다른 색으로 칠해야 한다면 무조건 이분 그래프가 아니다.
+# 모든 정점을 다 방문했는데 위와 같은 경우가 없다면 이분 그래프이다.
+# 이때 주의할 점은 연결 그래프와 비연결 그래프를 둘 다 고려 해야한다는 것이다.
+# 그래프가 비연결 그래프인 경우 모든 정점에 대해서 확인하는 작업이 필요하다.
+import sys
+from collections import deque
+input = sys.stdin.readline
+result = []
+def bfs(v):
+    q=deque() 
+    visited[v]=True
+    color[v]=1
+    q.append(v)
+    while q:
+        now = q.popleft()
+        for i in graph[now]:
+            if visited[i]==False:
+                visited[i]=True
+                color[i]= 3-color[now]
+                q.append(i)
+            else:
+                if color[now] == color[i]:
+                    return False
+
+    return True
+
+k = int(input()) #테스트케이스
+for _ in range(k): 
+    v,e = map(int,input().split()) # v=정점, e= 간선
+    visited = [False]*(v+1)
+    graph = [[]for i in range(v+1)]
+    color = [0]*(v+1)
+    flg = 1
+    #1=red ,2=blue #처음시작은 레드
+    for i in range(e):
+        a,b=map(int,input().split())
+        graph[a].append(b)
+        graph[b].append(a)
+    for i in range(1,v+1):
+        if visited[i]==False:
+            if not bfs(i):
+                flg= -1
+                break
+    print('YES'if flg==1 else 'NO')
