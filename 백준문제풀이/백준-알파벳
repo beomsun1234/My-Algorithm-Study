@@ -1,0 +1,62 @@
+## 해당 알고리즘은 시간초과 
+import sys
+input = sys.stdin.readline
+# c= 문자의 개수
+# ㅣ = 뽀ㅓㅂ기# 
+r,c = map(int,input().split())
+Map = [list(input().strip())for _ in range(r)]
+dx = [1,-1,0,0] #좌우
+dy = [0,0,1,-1] #상하
+visted = [[False]*c for _ in range(r)]
+ck=[]
+ret = 0
+def solve(i,j):
+    for way in range(4):
+        nx = dx[way]+i
+        ny = dy[way]+j
+        if nx<0 or nx>=r or ny <0 or ny>=c:
+            continue
+        if visted[nx][ny]==False and Map[nx][ny] not in ck:
+            global ret
+            visted[nx][ny]=True
+            ck.append(Map[nx][ny])
+            ret=max(ret,len(ck))
+            solve(nx,ny)
+            visted[nx][ny]=False
+            ck.pop()
+
+ck.append(Map[0][0])
+visted[0][0]=True
+solve(0,0) # 항상 좌측 상단에서 시작함
+if r==1 and c==1:
+    print(1)
+else:
+    print(ret)
+###### 다른 알고리즘
+# map(ord(x)-65, input().strip())을 통해서 한번에 모두 숫자로 변환해 준다.
+import sys
+input = sys.stdin.readline
+r, c = map(int, input().split())
+arr = [list(map(lambda x: ord(x) - 65, input().rstrip())) for _ in range(r)]
+alpha = [0] * 26  #알파벳 저장
+
+dx = [1, -1, 0, 0]
+dy = [0, 0, 1, -1]
+
+def dfs(x, y, count):
+    global ans
+    ans = max(ans, count)
+    for i in range(4):
+        nx = x + dx[i]
+        ny = y + dy[i]
+        if 0 <= nx < r and 0 <= ny < c and alpha[arr[nx][ny]] == 0:
+            alpha[arr[nx][ny]] = 1
+            dfs(nx, ny, count + 1)
+            alpha[arr[nx][ny]] = 0
+
+
+ans = 1
+alpha[arr[0][0]] = 1
+dfs(0, 0, 1)
+
+print(ans)
