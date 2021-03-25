@@ -1,0 +1,38 @@
+## 나이트의 이동
+
+# 체스판 위에 한 나이트가 놓여져 있다. 나이트가 한 번에 이동할 수 있는 칸은 아래 그림에 나와있다. 나이트가 이동하려고 하는 칸이 주어진다. 
+# 나이트는 몇 번 움직이면 이 칸으로 이동할 수 있을까?
+from collections import deque
+import sys
+result=[]
+# x,y
+movetype = [(-2,1),(-1,2),(2,1),(1,2),(-2,-1),(-1,-2),(2,-1),(1,-2)]
+t = int(input())
+#체스판의 크기 = l
+for i in range(t):
+    l = int(input()) 
+    visited =[[0]*l for _ in range(l)]
+    sx,sy=map(int,input().split())
+    gx,gy = map(int,input().split())
+    q=deque()
+    q.append((sx,sy,0))
+    visited[sx][sy]=1
+    while q:
+        x,y,cnt=q.popleft()
+        if x==gx and gy==y:
+            result.append(cnt)              
+            break
+        for i in movetype:
+            nx,ny = i[0]+x,i[1]+y
+            #print(nx,ny)
+            if nx<0 or nx >=l or ny <0 or ny>=l:
+                continue
+            if visited[nx][ny]==1:
+                continue
+            if visited[nx][ny]==0:
+                visited[nx][ny]=1
+                q.append((nx,ny,cnt+1))
+
+    
+for z in range(t):
+    print(result[z])
