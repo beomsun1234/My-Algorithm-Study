@@ -1,0 +1,17 @@
+## 로또 문제 -------------------------------------------------------------------------------------
+
+from itertools import combinations
+
+
+while True:
+    Num= list(map(int,input().split()))
+    t = Num[0] 
+    del Num[0]
+    if t==0:
+        break
+    Num = list(combinations(Num,6))
+    for i in Num:
+        for j in i:
+            print(j, end=' ')
+        print()
+    print()
