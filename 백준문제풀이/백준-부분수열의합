@@ -1,0 +1,42 @@
+############## 부분 수열의 합 #틀림 #
+
+## 종료 조건에 리턴을 지우니 정답처리됨......
+# 리턴을 해서 다음껄 확인 못하기 떄문인듯하다
+N, S =map(int, input().split())
+Num = list(map(int,input().split()))
+#print(Num)
+tmp=[]
+result=0
+visted=[False]*N
+def solve(idx):
+    global result
+    if len(tmp)!=0 and sum(tmp)==S:
+        #print('종료')
+        #print(tmp)
+        result+=1
+
+    for i in range(idx,len(Num)):
+        if visted[i]==False:
+            visted[i]=True
+            tmp.append(Num[i])
+            solve(i+1)
+            tmp.pop()
+            visted[i]=False
+
+
+solve(0)
+print(result)
+
+####완전정복 문제들을 보다보면
+
+#숫자의 순서를 고려하는 경우가 있고(순열)
+
+#숫자의 순서를 고려하지 않는 경우가 있는데(조합)
+
+#이 경우엔 후자이다.
+
+#주의해야할 부분은 이 정도인 것 같다.
+
+#1. 인덱스가 포함되는 부분(dfs(depth +1, sumN)), 인덱스가 포함되지 않는 부분(dfsdepth+1,sumN))으로 나뉨)
+
+#(=> 이 때문에 숫자의 개수(N)이 늘어날 때마다 2^k 만큼 경우의 수가 증가한다)
