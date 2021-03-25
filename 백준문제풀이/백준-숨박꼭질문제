@@ -1,0 +1,33 @@
+#### 숨박꼭질
+
+
+# 수빈이는 동생과 숨바꼭질을 하고 있다. 
+# 수빈이는 현재 점 N(0 ≤ N ≤ 100,000)에 있고, 동생은 점 K(0 ≤ K ≤ 100,000)에 있다. 
+# 수빈이는 걷거나 순간이동을 할 수 있다. 
+# 만약, 수빈이의 위치가 X일 때 걷는다면 1초 후에 X-1 또는 X+1로 이동하게 된다. 순간이동을 하는 경우에는 1초 후에 2*X의 위치로 이동하게 된다.
+# 수빈이와 동생의 위치가 주어졌을 때, 수빈이가 동생을 찾을 수 있는 가장 빠른 시간이 몇 초 후인지 구하는 프로그램을 작성하시오.
+
+# n 수빈이 위치 , k는 동생위치
+from collections import deque
+n, k = map(int,input().split())
+q=deque()
+visted = [False] * 100001
+q.append((n,0))
+move =[-1,1,0]
+ck=0
+while q:
+    x,c= q.popleft()
+    if x==k:
+        print(c)
+        break
+    for way in range(3):
+        if way == 2:
+            dx = x*2
+        else:
+            dx = move[way]+x
+        if dx <0 or dx >100000:
+            continue
+        if dx <=100000 and visted[dx]==False:
+            visted[dx]=True
+            q.append((dx,c+1))
+            print(dx) 
